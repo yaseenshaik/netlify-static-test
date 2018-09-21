@@ -1,0 +1,46 @@
+<!doctype html>
+  <html lang='en'>
+  <head>
+    <title>StayCircles - Redirecting</title>
+  </head>
+  <body>
+    <script>
+      function appOrPage (appUrl, pageUrl, fallBackAppUrl) {
+        if (!appUrl || !pageUrl) {
+          window.location = "/"
+          return
+        }
+
+        var start = Date.now()
+
+        if (fallBackAppUrl) {
+          window.setTimeout(function () {
+            if (Date.now() - start < 60) {
+              window.location = fallBackAppUrl
+            }
+          }, 50)
+        }
+
+        window.setTimeout(function () {
+          if (Date.now() - start < 110) {
+            window.location = pageUrl
+          }
+        }, 100)
+
+        window.location = appUrl
+      }
+
+      function getQueryStringValue (key) {
+        return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[.+*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+      }
+
+      document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+          appOrPage(getQueryStringValue("appUrl"), getQueryStringValue("pageUrl"), getQueryStringValue("fallBackAppUrl"))
+        },
+        false
+      );
+    </script>
+  </body>
+</html>
